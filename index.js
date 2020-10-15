@@ -27,6 +27,8 @@ client.connect(err => {
   const clientOrderCollection = client.db("creativeAgency").collection("clientOrder");
   const clientReviewCollection = client.db("creativeAgency").collection("clientReview");
   const adminAddServiceCollection = client.db("creativeAgency").collection("addService");
+  const makeAdminCollection = client.db("creativeAgency").collection("addAdmin");
+
   
   app.post('/addClientOrder', (req, res) => {
       const clientOrder = req.body;
@@ -43,7 +45,7 @@ client.connect(err => {
         })
    });
 
-   app.get('/getAllClientsOrder', (req, res) => {
+   app.get('/getClientOrder', (req, res) => {
     clientOrderCollection.find({email: req.query.email})
     .toArray((error, documents) => {
       res.send(documents);
@@ -70,10 +72,10 @@ client.connect(err => {
     const file = req.files.file;
     const title = req.body.title;
     const description = req.body.description;
-    console.log(title, description, file);
+    //console.log(title, description, file);
     file.mv(`${__dirname}/addService/${file.name}`, error => {
       if(error){
-        console.log(error);
+        //console.log(error);
         return res.status(500).send({msg: 'Failed to upload image'});
       }
       return res.send({name: file.name, path: `/${file.name}`})
@@ -91,6 +93,32 @@ client.connect(err => {
         res.send(documents);
     })
   });
+
+  app.post('/addAdmin', (req, res) => {
+    const admin = req.body;
+    makeAdminCollection.insertOne(admin)
+    .then(result => {
+        res.send(result.insertedCount > 0)
+    })
+  });
+
+  app.post('/getAdmin', (req, res) => {
+    const email = req.body.email;
+    console.log("Push email:", email);
+    makeAdminCollection.find({email: email})
+    .toArray((error, documents) => {
+       res.send(documents.length > 0);
+      
+    })
+  });
+
+  // app.get('/getAdmin', (req, res) => {
+  //   makeAdminCollection.find()
+  //   .toArray((error, documents) => {
+  //     res.send(documents);
+      
+  //   })
+  // });
 
 
 
