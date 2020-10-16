@@ -75,33 +75,22 @@ client.connect(err => {
     const file = req.files.file;
     const title = req.body.title;
     const description = req.body.description;
-    const filePath = `${__dirname}/addService/${file.name}`;
-    
-    file.mv(filePath, error => {
-      if(error){
-        res.status(500).send({msg: 'Failed to upload image'});
-      }
+    const newImg = file.data;
+    const encImg = newImg.toString('base64');
+    var image = {
+      contentType: file.mimetype,
+      size: file.size,
+      img: Buffer.from(encImg, 'base64')
+    };
 
-      const newImg = fs.readFileSync(filePath);
-      const encImg = newImg.toString('base64');
-      var image = {
-        contentType: req.files.file.mimetype,
-        size: req.files.file.size,
-        img: Buffer(encImg, 'base64')
-      };
-
-      adminAddServiceCollection.insertOne({title, description, image})
-      .then(result => {
-        fs.remove(filePath, err => {
-          if(err){
-            console.log(err);
-            res.status(500).send({msg: 'Failed to upload image'});
-          }
-          res.send(result.insertedCount > 0)
-        })
-        
-      })
+    adminAddServiceCollection.insertOne({title, description, image})
+    .then(result => {
+      
+        res.send(result.insertedCount > 0)
+      
+      
     })
+    
     
 
   });
