@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const fs = require('fs-extra');
 const fileUpload = require('express-fileupload');
 const MongoClient = require('mongodb').MongoClient;
 require('dotenv').config();
@@ -74,18 +75,36 @@ client.connect(err => {
     const file = req.files.file;
     const title = req.body.title;
     const description = req.body.description;
+    const filePath = `${__dirname}/addService/${file.name}`;
     //console.log(title, description, file);
-    file.mv(`${__dirname}/addService/${file.name}`, error => {
+    
+    file.mv(filePath, error => {
       if(error){
         //console.log(error);
-        return res.status(500).send({msg: 'Failed to upload image'});
+        res.status(500).send({msg: 'Failed to upload image'});
       }
-      return res.send({name: file.name, path: `/${file.name}`})
+
+      const newImg = fs.readFileSync(filePath);
+      const encImg = newImg.toString('base64');
+      var image = {
+        contentType: req.files.file.mimetype,
+        size: req.files.file.size,
+        img: Buffer(encImg, 'base64')
+      };
+
+      adminAddServiceCollection.insertOne({title, description, image})
+      .then(result => {
+        fs.remove(filePath, err => {
+          if(err){
+            console.log(err);
+            res.status(500).send({msg: 'Failed to upload image'});
+          }
+          res.send(result.insertedCount > 0)
+        })
+        
+      })
     })
-    adminAddServiceCollection.insertOne({title, description, img: file.name})
-    .then(result => {
-      res.send(result.insertedCount > 0)
-    })
+    
 
   });
 
