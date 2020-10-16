@@ -76,11 +76,9 @@ client.connect(err => {
     const title = req.body.title;
     const description = req.body.description;
     const filePath = `${__dirname}/addService/${file.name}`;
-    //console.log(title, description, file);
     
     file.mv(filePath, error => {
       if(error){
-        //console.log(error);
         res.status(500).send({msg: 'Failed to upload image'});
       }
 
@@ -125,7 +123,6 @@ client.connect(err => {
 
   app.post('/getAdmin', (req, res) => {
     const email = req.body.email;
-    // console.log("Push email:", email);
     makeAdminCollection.find({email: email})
     .toArray((error, documents) => {
        res.send(documents.length > 0);
