@@ -14,6 +14,8 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static('addService'));
+
+
 app.use(fileUpload());
 
 const port = 5000;
@@ -104,7 +106,7 @@ client.connect(err => {
 
   app.post('/getAdmin', (req, res) => {
     const email = req.body.email;
-    console.log("Push email:", email);
+    // console.log("Push email:", email);
     makeAdminCollection.find({email: email})
     .toArray((error, documents) => {
        res.send(documents.length > 0);
@@ -112,17 +114,7 @@ client.connect(err => {
     })
   });
 
-  // app.get('/getAdmin', (req, res) => {
-  //   makeAdminCollection.find()
-  //   .toArray((error, documents) => {
-  //     res.send(documents);
-      
-  //   })
-  // });
-
-
-
-   
+  
   
 });
 
