@@ -99,7 +99,7 @@ client.connect((err) => {
   app.get("/getAddedService", (req, res) => {
     adminAddServiceCollection
       .find({})
-      .limit(6)
+      .limit(12)
       .toArray((error, documents) => {
         res.send(documents);
       });
