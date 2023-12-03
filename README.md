@@ -17,26 +17,21 @@ Features:
 
 - The admin can make other as an admin.
 
-Technologies:
+# Using Technologies
+
 -
-- HTML5
-- CSS3
-- ES6
-- React.JS
-- Bootstrap
-- React-Spring
-- MongoDB
-- ReST API
-- Node.JS
+- ReactJS
+- Raw CSS
+- Tailwind
+- DaisyUI
+- Framer Motion
+- React Form Hook
+- React Router Dom
+- React Slick
+- Prime React (Icon)
 - Firebase
-- Git
-- Heroku
 
-Live site link
--
-https://eloquent-monstera-06f5d1.netlify.app/
+## Live site link
 
-My Resume link
--
-https://drive.google.com/file/d/1TWiJ3LrUbaLOQ1AOatBOGvjtnFvsQrLZ/view?usp=sharing
+- https://creative-agency-reform-client.web.app/
 
