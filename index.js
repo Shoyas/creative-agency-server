@@ -71,7 +71,7 @@ client.connect((err) => {
   app.get("/getAllClientReview", (req, res) => {
     clientReviewCollection
       .find({})
-      .limit(6)
+      .limit(12)
       .toArray((error, documents) => {
         res.send(documents);
       });
